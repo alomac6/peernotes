@@ -13,13 +13,15 @@ import './styles.css'
 import reportWebVitals from './reportWebVitals.ts'
 
 import App from './App.tsx'
-
+import Header from './components/Header.tsx'
 const rootRoute = createRootRoute({
   component: () => (
-    <>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
+    <div className="min-h-screen bg-white text-black">
+      <Header />
+      <main className='h-[85vh]'>
+        <Outlet />
+      </main>
+    </div>
   ),
 })
 
@@ -56,7 +58,4 @@ if (rootElement && !rootElement.innerHTML) {
   )
 }
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals()
