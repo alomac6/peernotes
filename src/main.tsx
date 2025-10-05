@@ -8,12 +8,16 @@ import {
   createRouter,
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; // Import QueryClient and provider
 import './styles.css';
 import reportWebVitals from './reportWebVitals.ts';
 
 import App from './App.tsx';
 import Header from './components/Header.tsx';
 import ClassPage from './components/Class.tsx';
+
+// Create a client
+const queryClient = new QueryClient();
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -60,7 +64,10 @@ if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      {/* Wrap RouterProvider with QueryClientProvider */}
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </StrictMode>,
   );
 }

@@ -32,9 +32,9 @@ export function ClassItem({ classInfo, isFavorite, onToggleFavorite }: ClassItem
       className="flex items-center justify-between text-center p-2 border-2 border-black rounded-md text-black bg-gray-100 no-underline hover:border-orange-500"
       style={{ width: '15vw', height: '10vh' }}
     >
-      <div className="flex flex-col items-center flex-grow">
+      <div className="flex flex-col items-center flex-grow min-w-0">
         <span className="font-bold text-lg">{department}-{code}</span>
-        <span className="text-md">{name}</span>
+        <span className="text-md w-full truncate px-1">{name}</span>
       </div>
       <Star
         className={`cursor-pointer transition-colors z-10 ${
@@ -45,4 +45,3 @@ export function ClassItem({ classInfo, isFavorite, onToggleFavorite }: ClassItem
     </Link>
   );
 }
-

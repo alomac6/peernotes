@@ -5,9 +5,10 @@ type SuggestedProps = {
   suggestedClasses: ClassInfo[];
   favoriteIds: number[];
   onToggleFavorite: (classInfo: ClassInfo) => void;
+  searchText: string;
 }
 
-export default function Suggested({ suggestedClasses, favoriteIds, onToggleFavorite }: SuggestedProps) {
+export default function Suggested({ suggestedClasses, favoriteIds, onToggleFavorite, searchText }: SuggestedProps) {
   return (
     <div className="w-full mt-4">
       <h2 className="text-xl font-bold mb-2">Suggested</h2>
@@ -21,6 +22,8 @@ export default function Suggested({ suggestedClasses, favoriteIds, onToggleFavor
               onToggleFavorite={onToggleFavorite}
             />
           ))
+        ) : searchText === '' ? (
+          <p className="text-gray-500">Try to type the class name to see suggested options</p>
         ) : (
           <p className="text-gray-500">No matching classes found.</p>
         )}
