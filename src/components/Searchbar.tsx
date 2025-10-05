@@ -1,9 +1,11 @@
-import { Link } from '@tanstack/react-router'
-import { useState } from 'react'
-export default function Searchbar() {
+export default function Searchbar({ onSearchChange }: { onSearchChange: (text: string) => void }) {
     return(
-       <div className='w-full h-fit flex flex-row justify-center border-black border-3 rounded-sm mt-[5vh]'>
-            <input placeholder='search your classes p' className='w-full p-1 focus:outline-none'/>
+        <div className='w-full'>
+            <input 
+                placeholder='ex: CSE-2320 or class name...'
+                className='w-full p-3 rounded-md border-2 border-gray-300 text-black focus:outline-none focus:border-blue-500'
+                onChange={(e) => onSearchChange(e.target.value)}
+            />
         </div>
     );
 }
