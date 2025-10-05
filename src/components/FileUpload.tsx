@@ -5,10 +5,12 @@ type FileUploadProps = {
   isOpen: boolean;
   onClose: () => void;
   onUploadComplete: (status: 'success' | 'fail') => void;
+  courseName: string;
 };
 
-export default function FileUpload({ isOpen, onClose, onUploadComplete }: FileUploadProps) {
+export default function FileUpload({ isOpen, onClose, onUploadComplete, courseName }: FileUploadProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [description, setDescription] = useState('');
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -22,11 +24,39 @@ export default function FileUpload({ isOpen, onClose, onUploadComplete }: FileUp
       alert("Please select a file first.");
       return;
     }
+
+    const payload = {
+      description: description,
+      filename: selectedFile.name,
+      courseName: courseName,
+    };
+
+    const uploadUrl = `https://jayson-willowy-deceivingly.ngrok-free.dev/class/${courseName}`;
+
+    try {
+      const response = await fetch(uploadUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        onUploadComplete('success');
+      } else {
+        const errorText = await response.text();
+        console.error('Upload failed with status:', response.status, 'and message:', errorText);
+        onUploadComplete('fail');
+      }
+    } catch (error) {
+      console.error('Upload request failed:', error);
+      onUploadComplete('fail');
+    }
+
     onClose();
-    await new Promise(resolve => setTimeout(resolve, 100));
-    const isSuccess = Math.random() > 0.3; 
-    onUploadComplete(isSuccess ? 'success' : 'fail');
     setSelectedFile(null);
+    setDescription('');
   };
 
   if (!isOpen) {
@@ -37,26 +67,15 @@ export default function FileUpload({ isOpen, onClose, onUploadComplete }: FileUp
     <div className="fixed inset-0 backdrop-blur-xl bg-opacity-50 flex justify-center items-center z-50">
       <div
         className="relative bg-white text-black rounded-lg shadow-xl p-8 border-black border-1"
-        style={{ width: '50vw', height: '60vh' }}
+        style={{ width: '50vw', height: 'fit-content' }}
       >
         <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
           <X size={24} />
         </button>
 
-        <h2 className="text-2xl font-bold mb-6 text-center">Upload a New File</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Upload a New File for {courseName.toUpperCase()}</h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-          <div>
-            <label htmlFor="fileName" className="block text-sm font-medium text-gray-700 mb-1">
-              File Name
-            </label>
-            <input
-              type="text"
-              id="fileName"
-              placeholder="e.g., Exam 1 Study Guide"
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
           <div>
             <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
               Description
@@ -66,6 +85,8 @@ export default function FileUpload({ isOpen, onClose, onUploadComplete }: FileUp
               placeholder="A brief description of the file's content."
               rows={3}
               className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
           

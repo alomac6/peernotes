@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { PlusCircle, CheckCircle, XCircle } from 'lucide-react';
+import { useParams } from '@tanstack/react-router';
 import Searchbar from './Searchbar.tsx';
 import Files from './Files.tsx';
 import FileUpload from './FileUpload.tsx';
@@ -28,6 +29,7 @@ const files_map = [
 ];
 
 export default function Class() {
+  const { classCode } = useParams({ from: '/class/$classCode' });
   const [searchText, setSearchText] = useState('');
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>('idle');
@@ -74,6 +76,7 @@ export default function Class() {
         isOpen={isUploadModalOpen} 
         onClose={() => setIsUploadModalOpen(false)} 
         onUploadComplete={setUploadStatus}
+        courseName={classCode}
       />
       <Toast status={uploadStatus} />
     </>

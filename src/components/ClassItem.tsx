@@ -37,7 +37,7 @@ export function ClassItem({ classInfo, isFavorite, onToggleFavorite }: ClassItem
         <span className="text-md w-full truncate px-1">{name}</span>
       </div>
       <Star
-        className={`cursor-pointer transition-colors z-10 ${
+        className={`cursor-pointer transition-colors z-10 flex-shrink-0 w-6 h-6 ${
           isFavorite ? 'text-orange-500 fill-orange-500' : 'text-gray-400 fill-none'
         }`}
         onClick={handleToggleFavorite}
