@@ -19,7 +19,7 @@ function FileItem({ name, description }: { name: string; description: string }) 
 export default function Files({ files }: { files: File[] }) {
   return (
     <div className="w-full mt-8">
-      <div className="flex flex-wrap justify-between gap-4">
+      <div className="flex flex-wrap justify-start gap-11">
         {files.length > 0 ? (
             files.map((file) => (
                 <FileItem key={file.id} name={file.name} description={file.description} />
