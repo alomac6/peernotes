@@ -1,19 +1,20 @@
-import { StrictMode } from 'react'
-import ReactDOM from 'react-dom/client'
+import { StrictMode } from 'react';
+import ReactDOM from 'react-dom/client';
 import {
   Outlet,
   RouterProvider,
   createRootRoute,
   createRoute,
   createRouter,
-} from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+} from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+import './styles.css';
+import reportWebVitals from './reportWebVitals.ts';
 
-import './styles.css'
-import reportWebVitals from './reportWebVitals.ts'
+import App from './App.tsx';
+import Header from './components/Header.tsx';
+import ClassPage from './components/Class.tsx';
 
-import App from './App.tsx'
-import Header from './components/Header.tsx'
 const rootRoute = createRootRoute({
   component: () => (
     <div className="min-h-screen bg-white text-black">
@@ -23,15 +24,21 @@ const rootRoute = createRootRoute({
       </main>
     </div>
   ),
-})
+});
 
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
   component: App,
-})
+});
 
-const routeTree = rootRoute.addChildren([indexRoute])
+const classRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/class/$classCode', // Changed from $classId to $classCode
+    component: ClassPage,
+});
+
+const routeTree = rootRoute.addChildren([indexRoute, classRoute]);
 
 const router = createRouter({
   routeTree,
@@ -40,22 +47,24 @@ const router = createRouter({
   scrollRestoration: true,
   defaultStructuralSharing: true,
   defaultPreloadStaleTime: 0,
-})
+});
 
 declare module '@tanstack/react-router' {
   interface Register {
-    router: typeof router
+    router: typeof router;
   }
 }
 
-const rootElement = document.getElementById('app')
+const rootElement = document.getElementById('app');
 if (rootElement && !rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement)
+  const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
       <RouterProvider router={router} />
     </StrictMode>,
-  )
+  );
 }
 
-reportWebVitals()
+reportWebVitals();
+
+

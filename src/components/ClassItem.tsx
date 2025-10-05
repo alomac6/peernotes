@@ -1,4 +1,6 @@
 import { Star } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
+import type { MouseEvent } from 'react';
 
 export type ClassInfo = {
   id: number;
@@ -15,10 +17,19 @@ type ClassItemProps = {
 
 export function ClassItem({ classInfo, isFavorite, onToggleFavorite }: ClassItemProps) {
   const { department, code, name } = classInfo;
+  const classCodeUrl = `${department.toLowerCase()}-${code}`;
+
+  const handleToggleFavorite = (e: MouseEvent) => {
+    e.preventDefault(); 
+    e.stopPropagation();
+    onToggleFavorite(classInfo);
+  };
 
   return (
-    <div
-      className="flex items-center justify-between text-center p-2 border-2 border-black rounded-md text-black bg-gray-100 hover:border-orange-500"
+    <Link
+      to="/class/$classCode"
+      params={{ classCode: classCodeUrl }}
+      className="flex items-center justify-between text-center p-2 border-2 border-black rounded-md text-black bg-gray-100 no-underline hover:border-orange-500"
       style={{ width: '15vw', height: '10vh' }}
     >
       <div className="flex flex-col items-center flex-grow">
@@ -26,12 +37,12 @@ export function ClassItem({ classInfo, isFavorite, onToggleFavorite }: ClassItem
         <span className="text-md">{name}</span>
       </div>
       <Star
-        className={`cursor-pointer transition-colors ${
+        className={`cursor-pointer transition-colors z-10 ${
           isFavorite ? 'text-orange-500 fill-orange-500' : 'text-gray-400 fill-none'
         }`}
-        onClick={() => onToggleFavorite(classInfo)}
+        onClick={handleToggleFavorite}
       />
-    </div>
+    </Link>
   );
 }
 
