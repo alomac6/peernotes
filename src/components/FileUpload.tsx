@@ -5,10 +5,11 @@ type FileUploadProps = {
   isOpen: boolean;
   onClose: () => void;
   onUploadComplete: (status: 'success' | 'fail') => void;
-  courseName: string;
+  classCode: string;
+  className: string;
 };
 
-export default function FileUpload({ isOpen, onClose, onUploadComplete, courseName }: FileUploadProps) {
+export default function FileUpload({ isOpen, onClose, onUploadComplete, classCode, className }: FileUploadProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [description, setDescription] = useState('');
 
@@ -28,10 +29,10 @@ export default function FileUpload({ isOpen, onClose, onUploadComplete, courseNa
     const payload = {
       description: description,
       filename: selectedFile.name,
-      courseName: courseName,
+      courseName: className,
     };
 
-    const uploadUrl = `https://jayson-willowy-deceivingly.ngrok-free.dev/class/${courseName}`;
+    const uploadUrl = `https://jayson-willowy-deceivingly.ngrok-free.dev/class/${classCode}`;
 
     try {
       const response = await fetch(uploadUrl, {
@@ -73,7 +74,7 @@ export default function FileUpload({ isOpen, onClose, onUploadComplete, courseNa
           <X size={24} />
         </button>
 
-        <h2 className="text-2xl font-bold mb-6 text-center">Upload a New File for {courseName.toUpperCase()}</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Upload a New File for {classCode.toUpperCase()}</h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <div>
