@@ -7,7 +7,7 @@ type File = {
 function FileItem({ name, description }: { name: string; description: string }) {
   return (
     <div 
-      className="flex flex-col justify-center text-center p-4 border-2 border-black rounded-lg bg-white"
+      className="flex flex-col justify-center text-center p-4 border-2 border-black rounded-lg bg-white overflow-hidden hover:border-orange-500"
       style={{ width: '15vw', height: '15vh' }}
     >
       <span className="font-bold text-lg">{name}</span>
